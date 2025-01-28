@@ -1,11 +1,11 @@
 import { AbstractView } from "./AbstractView.js";
 
 export class HomeView extends AbstractView{
-    // install variables
+    // instance variables
     controller = null;
     constructor(controller){
         super();
-        this.controller = controller ;
+        this.controller = controller;
     }
 
     async onMount(){
@@ -19,7 +19,7 @@ export class HomeView extends AbstractView{
         return div;
     }
 
-    async attachEvents(){
+    attachEvents(){
         console.log('HomeView.attachEvents() called');
     }
 
