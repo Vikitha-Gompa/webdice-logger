@@ -3,6 +3,8 @@ import { ProfileView } from "../view/ProfileView.js";
 import { HomeController } from "./HomeController.js";
 import { ProfileController } from "./ProfileController.js";
 import { Router } from "./Router.js";
+import {loginFirebase, logoutFirebase} from './firebase_auth.js';
+
 
 document.getElementById('appHeader').textContent = 'Cloud Web Template'
 document.title = 'App Template' ;
@@ -13,7 +15,7 @@ const routes =  [
 ];
 
 // create an instance of Router
-const router = new Router(routes);
+export const router = new Router(routes);
 router.navigate(window.location.pathname);
 
 const menuItems = document.querySelectorAll('a[data-path]');
@@ -25,12 +27,32 @@ menuItems.forEach(item => {
 });
 
 // login form event listener
-document.forms.loginForm.onsubmit = function(e){
+document.forms.loginForm.onsubmit = async function(e){
     e.preventDefault();  // prevent from page reload
-    console.log('login form submitted', e.target.email.value, e.target.password.value);
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    try {
+        await loginFirebase(email, password);
+        console.log('User logged in', email);
+    } catch(e){
+        console.error('Error logging in:',e);
+        const errorCode = e.code;
+        const errorMessage = e.message;
+        alert('Sign in failed: '+ e.code + ',' + e.message);
+
+    }
 }
 
 //logout button
-document.getElementById('logoutButton').onclick= function(e){
-    console.log('Logout button clicked');
+document.getElementById('logoutButton').onclick= async function(e){
+    try{
+        await logoutFirebase();
+        console.log('User logged out');
+    } catch(e){
+        console.error('Error looging out:', e);
+        const errorCode = e.code;
+        const errorMessage = e.message;
+        alert('Sign out failed: '+ e.code + ',' + e.message);
+
+    }
 }
