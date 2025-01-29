@@ -56,3 +56,17 @@ document.getElementById('logoutButton').onclick= async function(e){
 
     }
 }
+
+//show create account form / hide login form
+document.getElementById('goToCreateAccount').onclick = function(e){
+    document.getElementById('loginDiv').classList.replace('d-block', 'd-none');
+    document.getElementById('createAccountDiv').classList.replace('d-none', 'd-block');
+    document.forms.createAccountForm.reset();
+}
+
+//hide create account form / show login form
+
+document.getElementById('goToLogin').onclick = function(e){
+    document.getElementById('loginDiv').classList.replace('d-none', 'd-block');
+    document.getElementById('createAccountDiv').classList.replace('d-block', 'd-none');
+}
