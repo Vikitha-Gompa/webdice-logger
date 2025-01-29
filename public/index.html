@@ -11,6 +11,11 @@
 </head>
 
 <body>
+  <!--spinning overlay as progress indicator-->
+  <div id="spinnerOverlay" style="z-index: 1100" class=" d-none postiom-fixed top-0 start-0 w-50 h-50 d-flex justify-content-center align-items-center">
+    <div class="spinner-border text-primary" role="status" style="width: 50px; height:50px;"></div>
+  </div>
+
   <div class="container">
     <h1 id="appHeader" class="mt-3 text-white text-center bg-primary">App Header</h1>
   </div>
@@ -43,38 +48,43 @@
   <div class="container">
     <div id="loginDiv" class="card p-4 shadow d-block">
       <h1>Login</h1>
-      <form name="loginForm"> 
+      <form name="loginForm">
         <div class="mb-3">
           <label class="form-label">Email </label>
-          <input name="email" type="email" class="form-control" required  aria-describedby="emailHelp" placeholder="Enter email">
+          <input name="email" type="email" class="form-control" required aria-describedby="emailHelp"
+            placeholder="Enter email">
         </div>
         <div class="mb-3">
           <label class="form-label">Password</label>
-          <input name="password" type="password" class="form-control" minlength="6" required placeholder="Enter password">
+          <input name="password" type="password" class="form-control" minlength="6" required
+            placeholder="Enter password">
         </div>
         <button type="submit" class="btn btn-primary">Enter</button>
       </form>
-      <button id ="goToCreateAccount" class="btn btn-outline-danger mt-3">Go To Create Account Form</button> 
+      <button id="goToCreateAccount" class="btn btn-outline-danger mt-3">Go To Create Account Form</button>
     </div>
 
     <div id="createAccountDiv" class="card p-4 shadow d-none">
       <h1>Create a New Account</h1>
-      <form name="createAccountForm"> 
+      <form name="createAccountForm">
         <div class="mb-3">
           <label class="form-label">Email </label>
-          <input name="email" type="email" class="form-control" required  aria-describedby="emailHelp" placeholder="Enter email">
+          <input name="email" type="email" class="form-control" required aria-describedby="emailHelp"
+            placeholder="Enter email">
         </div>
         <div class="mb-3">
           <label class="form-label">Confirm Email </label>
-          <input name="emailconfirm" type="email" class="form-control" required  aria-describedby="emailHelp" placeholder="Confirm email">
+          <input name="emailConfirm" type="email" class="form-control" required aria-describedby="emailHelp"
+            placeholder="Confirm email">
         </div>
         <div class="mb-3">
           <label class="form-label">Password</label>
-          <input name="password" type="password" class="form-control" minlength="6" required placeholder="Enter password">
+          <input name="password" type="password" class="form-control" minlength="6" required
+            placeholder="Enter password">
         </div>
         <button type="submit" class="btn btn-primary">Create</button>
       </form>
-      <button id ="goToLogin" class="btn btn-outline-danger mt-3">Go To Login Form</button> 
+      <button id="goToLogin" class="btn btn-outline-danger mt-3">Go To Login Form</button>
     </div>
   </div>
 

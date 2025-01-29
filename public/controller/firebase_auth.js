@@ -3,6 +3,7 @@ import {
     signInWithEmailAndPassword,
     signOut,
     onAuthStateChanged,
+    createUserWithEmailAndPassword,
 } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js"
 
 import { app } from './firebase_core.js';
@@ -49,3 +50,7 @@ onAuthStateChanged(auth, user => {
     }
  
 });
+
+export async function createAccount(email, password){
+    await createUserWithEmailAndPassword(auth, email, password);
+}
