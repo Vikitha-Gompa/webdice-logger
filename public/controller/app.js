@@ -7,8 +7,8 @@ import {createAccount, loginFirebase, logoutFirebase} from './firebase_auth.js';
 import { startSpinner, stopSpinner } from "../view/util.js";
 
 
-document.getElementById('appHeader').textContent = 'Play TicTacTow!';
-document.title = 'TicTacTow' ;
+document.getElementById('appHeader').textContent = 'Play TicTacToe!';
+document.title = 'TicTacToe' ;
 
 const routes =  [
     {path: '/', view: HomeView, controller: HomeController},
