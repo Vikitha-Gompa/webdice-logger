@@ -8,7 +8,7 @@ export const images = {
     U:'/images/u.png'
 }
 
-export const GameStae ={
+export const GameState ={
     INIT: 0, PLAYING: 1, DONE: 2
 }
 
@@ -24,7 +24,7 @@ export class HomeModel {
     turn = marking.X; // x or O
     moves = 0;
     progressMessage= ' Click New Game to Start';
-    PlayStrategy = GamePlayStrategy.VS_HUMAN ; 
+    playStrategy = GamePlayStrategy.VS_HUMAN; 
 
     // winning combinations
     winningCombinations =[
