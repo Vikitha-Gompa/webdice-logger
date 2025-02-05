@@ -1,6 +1,6 @@
 import { AbstractView } from "./AbstractView.js";
 import { currentUser } from "../controller/firebase_auth.js";
-import {GameState, images} from '../model/HomeModel.js';
+import { GameState, images, marking } from '../model/HomeModel.js';
 
 export class HomeView extends AbstractView {
     // instance variables
@@ -34,35 +34,53 @@ export class HomeView extends AbstractView {
 
         // radio buttons
         const radioButtons = viewWrapper.querySelectorAll('input[type="radio"]');
-        for(let i=0; i < radioButtons.length; i++){
+        for (let i = 0; i < radioButtons.length; i++) {
             radioButtons[i].checked = radioButtons[i].value === model.playStrategy;
         }
 
         // game board images
         const boardImages = viewWrapper.querySelectorAll('table img');
-        for(let i=this.onLeave; i < model.gameBoard.length; i++){
-             boardImages[i].src = images[model.gameBoard[i]];
+        for (let i = 0; i < model.gameBoard.length; i++) {
+            boardImages[i].src = images[model.gameBoard[i]];
         }
 
-        switch(model.gameState){
+        switch (model.gameState) {
             case GameState.INIT:
-                for(const img of boardImages){
+            case GameState.DONE:
+                for (const img of boardImages) {
                     img.noClick = true;
                 }
+                radioButtons.forEach(radio => radio.disabled = false);
+                viewWrapper.querySelector('#button-new-game').disabled = false;
                 break;
             case GameState.PLAYING:
+                for (let i = 0; i < model.gameBoard.length; i++) {
+                    boardImages[i].noClick = model.gameBoard[i] !== marking.U;
+                }
+                radioButtons.forEach(radio => radio.disabled = true);
+                viewWrapper.querySelector('#button-new-game').disabled = true;
                 break;
-            case GameState.DONE:
-                break;
-        }
 
-        
+        }
 
         return viewWrapper;
     }
 
     attachEvents() {
-       
+        document.getElementById('button-new-game').onclick 
+               = this.controller.onClickNewGameButton;
+        const boardImages = document.querySelectorAll('table img');
+        for(let i=0; i < boardImages.length; i++){
+            if(boardImages[i].noClick)continue;
+            boardImages[i].onclick = (e) => {
+                 this.controller.onClickBoardImages(i);
+            }
+        }
+        const radioButtons = document.querySelectorAll('input[type="radio"]');
+        for (let i=0; i < radioButtons.length; i++){
+            radioButtons[i].onchange = this.controller.onChangeGameStrategy;
+        }
+
     }
 
     async onLeave() {

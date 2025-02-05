@@ -23,7 +23,7 @@ export class HomeModel {
     winner = null; // X, O, U; null(playing)
     turn = marking.X; // x or O
     moves = 0;
-    progressMessage= ' Click New Game to Start';
+    progressMessage = ' Click New Game to Start';
     playStrategy = GamePlayStrategy.VS_HUMAN; 
 
     // winning combinations
