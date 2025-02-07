@@ -43,6 +43,15 @@ export class HomeModel {
         this.moves++;
     }
 
+    computerMove(){
+        // pick a random empty cell
+        let pos = Math.floor(Math.random()*9);
+        while(this.gameBoard[pos] !== marking.U){
+            pos = Math.floor(Math.random()*9);
+        }
+        return pos;
+    }
+
     changeTurn(){
         this.turn = this.turn ===marking.X ? marking.O : marking.X;
     }
@@ -79,7 +88,12 @@ export class HomeModel {
     }
 
 
-    reset(){}
+    reset(){
+        this.newGame();
+        this.playStrategy = GamePlayStrategy.VS_HUMAN
+        this.gameState = GameState.INIT;
+        this.progressMessage = 'Click New Game to start';
+    }
 
 
 
