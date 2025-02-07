@@ -67,7 +67,7 @@ export class HomeController{
 
     gameOver(){
         this.model.gameState = GameState.DONE;
-        this.model.progressMessage = this.model.winner != marking.u ?
+        this.model.progressMessage = this.model.winner != marking.U ?
         `Game Over:  ${this.model.winner} wins` :
         `Game Over: It's a draw!`;
     }
