@@ -56,11 +56,12 @@ export class HomeModel {
         this.turn = this.turn ===marking.X ? marking.O : marking.X;
     }
 
+    // return the game result: X, O, U (draw), null(playing)
     getGameResult(){
         // check if there is a winner
         for( let i = 0; i < this.winningCombinations.length; i++){
             const [a,b,c] = this.winningCombinations[i];
-            if(this.gameBoard[a] != marking.U && this.gameBoard[a] === this.gameBoard[b] && this.gameBoard[a] === this.gameBoard[c]){
+            if(this.gameBoard[a] !== marking.U && this.gameBoard[a] === this.gameBoard[b] && this.gameBoard[a] === this.gameBoard[c]){
                 return this.gameBoard[a];
             }
         }
@@ -68,6 +69,7 @@ export class HomeModel {
         // check for draw
         if(this.gameBoard.includes(marking.U) === false){
             return marking.U;
+            
         }
 
         // no winner or draw yet
