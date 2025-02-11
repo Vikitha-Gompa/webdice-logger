@@ -5,13 +5,16 @@ import { ProfileController } from "./ProfileController.js";
 import { Router } from "./Router.js";
 import {createAccount, loginFirebase, logoutFirebase} from './firebase_auth.js';
 import { startSpinner, stopSpinner } from "../view/util.js";
+import { PlayRecordView } from "../view/PlayRecordView.js";
+import { PlayRecordController } from "./PlayRecordController.js";
 
 
-document.getElementById('appHeader').textContent = 'Play TicTacToe!';
-document.title = 'TicTacToe' ;
+document.getElementById('appHeader').textContent = 'Play TicTacToe with Play Record';
+document.title = 'TicTacToe-PlayRecord' ;
 
 const routes =  [
     {path: '/', view: HomeView, controller: HomeController},
+    {path: '/playrecord', view: PlayRecordView, controller: PlayRecordController },
     {path: '/profile', view: ProfileView, controller: ProfileController}
 ];
 
