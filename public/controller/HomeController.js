@@ -1,5 +1,7 @@
 import { GamePlayStrategy, GameState, HomeModel, marking } from "../model/HomeModel.js";
 import {startSpinner, stopSpinner} from '../view/util.js';
+import { currentUser } from "./firebase_auth.js";
+import { addPlayRecord } from "./firestore_controller.js";
 
 export const glHomeModel= new HomeModel();
 
@@ -65,11 +67,23 @@ export class HomeController{
         }
     }
 
-    gameOver(){
+    async gameOver(){
         this.model.gameState = GameState.DONE;
         this.model.progressMessage = this.model.winner != marking.U ?
         `Game Over:  ${this.model.winner} wins` :
         `Game Over: It's a draw!`;
+
+        //save the game record to Firestore
+        startSpinner();
+        try{
+         const record = this.model.toFirestoreObject(currentUser.email);
+         await addPlayRecord(record);
+         stopSpinner();
+        }catch(e){
+            stopSpinner();
+            console.error('Enter saving game record: ', e);
+            alert('Error saving game record: '+ e);
+        }
     }
 
     onChangeGameStrategy(e){

@@ -97,6 +97,16 @@ export class HomeModel {
         this.progressMessage = 'Click New Game to start';
     }
 
+    toFirestoreObject(email){
+        return{
+            email: email,
+            timestamp: Date.now(),
+            winner: this.winner,
+            moves: this.moves,
+            gameStrategy: this.playStrategy,
+        }
+    }
+
 
 
 }
