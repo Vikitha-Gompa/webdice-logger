@@ -9,8 +9,8 @@ import { PlayRecordView } from "../view/PlayRecordView.js";
 import { PlayRecordController } from "./PlayRecordController.js";
 
 
-document.getElementById('appHeader').textContent = 'Play TicTacToe with Play Record';
-document.title = 'TicTacToe-PlayRecord' ;
+document.getElementById('appHeader').textContent = 'Dice Roll Game';
+document.title = 'Dice Roll Game' ;
 
 const routes =  [
     {path: '/', view: HomeView, controller: HomeController},
