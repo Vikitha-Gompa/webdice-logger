@@ -1,11 +1,11 @@
-import {currentUser} from "../controller/firebase_auth.js";
+import { currentUser } from "../controller/firebase_auth.js";
 import { AbstractView } from "./AbstractView.js";
 import { startSpinner, stopSpinner } from "./util.js";
-import {GamePlayStrategy, marking} from "../model/HomeModel.js";
+import { GamePlayStrategy, marking } from "../model/HomeModel.js";
 
-export class PlayRecordView extends AbstractView{
+export class PlayRecordView extends AbstractView {
     controller = null;
-    constructor(controller){
+    constructor(controller) {
         super();
         this.controller = controller;
 
@@ -20,71 +20,65 @@ export class PlayRecordView extends AbstractView{
 
         //load play records from Firestore
         startSpinner();
-        try{
+        try {
             const allPlayRecords = await this.controller.loadPlayRecords();
             this.controller.model.playRecords = allPlayRecords;
             stopSpinner();
 
-        }catch(e){
+        } catch (e) {
             stopSpinner();
             console.error('Error loading play records: ', e);
             alert('Error loading play records: ' + e);
-            this.controller.model.playRecords = null;
-
         }
     }
 
-    async updateView(){
+    async updateView() {
         console.log('ProfileView.updateView() called');
         const viewWrapper = document.createElement('div');
         const response = await fetch('/view/templates/playrecord.html'); { cache: 'no-store' };
         viewWrapper.innerHTML = await response.text();
 
-        viewWrapper.querySelector('#player').textContent = 'Player:' + currentUser.email;
+        const clear = viewWrapper.querySelector('button');
+        clear.onclick = this.controller.onClickClearButton;
+
         const playRecords = this.controller.model.playRecords;
-        const playRecordMain = viewWrapper.querySelector('#playRecordMain');
-        if(playRecords == null){
-            playRecordMain.innerHTML = '<h2>Error loading play records</h2>';
-        } else if(playRecords.length == 0){
-            playRecordMain.innerHTML = '<h2>No play records found</h2>';
-        } else{
-            for(const record of playRecords){
-                const recordView = this.buildCollapsibleRecord(record);
-                playRecordMain.appendChild(recordView);
+        const playRecordMain = viewWrapper.querySelector('table');
+        this.createTableHeader(playRecordMain);
+        const tbody = viewWrapper.querySelector('tbody');
+
+        clear.disabled = true;
+        if (playRecords == null || playRecords.length == 0) {
+            tbody.innerHTML = `<tr>
+    <td colspan="6" class="text-danger text-left"><strong>No play history found!</strong></td>
+</tr>`;
+        } else {
+            clear.disabled = false;
+
+
+
+            let i = 0;
+            for (const record of playRecords) {
+                const recordView = this.buildCollapsibleRecord(record, ++i);
+                tbody.appendChild(recordView);
             }
+            playRecordMain.appendChild(tbody);
         }
 
 
         return viewWrapper;
     }
 
-    buildCollapsibleRecord(record){
-        const topDiv = document.createElement('div');
-        topDiv.classList.add('mb-2');
+    buildCollapsibleRecord(record, i) {
+        const tr = document.createElement('tr');
+        const date = (new Date(record.timestamp).toLocaleString())
+        tr.innerHTML = "<td>" + i + "</td>" + "<td>" + record.bet + "</td>" + "<td>" + record.win + "</td>" + "<td>" + record.balance + "</td>" + "<td>" + date + "<td>"
 
-        const a = document.createElement('a');
-        a.classList.add('btn', 'btn-secondary', 'btn-sm');
-        a.setAttribute('data-bs-toggle', 'collapse');
-        a.href = `#record${record.docId}`;
-        a.textContent = new Date(record.timestamp).toLocaleString();
-        topDiv.appendChild(a);
-
-        const collapseDiv = document.createElement('div');
-        collapseDiv.classList.add('collapse');
-        collapseDiv.id = `record${record.docId}`;
-        collapseDiv.innerHTML = `
-            <div class="card card-body">
-               <p>Game Strategy: ${record.gameStrategy == GamePlayStrategy.VS_HUMAN ? 'Human vs. Human' : 'Human vs. Random'}</p>
-               <p>Moves: ${record.moves}</p>
-               <p>Winner: ${record.winner == marking.U ? 'Draw' : record.winner}</p>
-            </div>
-        `;
-        topDiv.appendChild(collapseDiv);
-        return topDiv;
+        return tr;
     }
 
-    attachEvents(){
+    attachEvents() {
         console.log('PlayRecordview.attachEvents() called');
+        // document.getElementsByTagName("button")[0]
     }
 
     async onLeave() {
@@ -94,6 +88,36 @@ export class PlayRecordView extends AbstractView{
         }
         console.log('PlayRecordView.onLeave() called');
     }
+
+    createTableHeader(table) {
+        // const table = document.getElementById('playRecordMain'); // Get the table element
+        const thead = document.createElement('thead'); // Create the <thead> element
+        const tr = document.createElement('tr'); // Create a row
+        const tb = document.createElement('tbody');
+        // const tb = document.createElement('th'); 
+
+        // Define the column headers
+        const headers = ["#", "Bet", "Won", "Balance", "Timestamp"];
+
+        // Loop through headers and create <th> elements
+        headers.forEach(headerText => {
+            const th = document.createElement('th');
+            th.setAttribute('scope', 'col');
+            th.innerHTML = headerText;
+            tr.appendChild(th);
+        });
+
+        // Append the row to the thead
+        thead.appendChild(tr);
+
+        // Append the thead to the table
+        table.appendChild(thead);
+        table.appendChild(tb);
+    }
+
+    // Call the function to create the table header
+
+
 
 
 }

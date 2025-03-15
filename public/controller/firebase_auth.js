@@ -36,6 +36,7 @@ onAuthStateChanged(auth, user => {
         const spaRoot = document.getElementById('spaRoot');
         spaRoot.classList.replace('d-none','d-block');
         router.navigate(window.location.pathname);
+        document.getElementById('loginInfo').innerHTML = currentUser.email;
     } else{
         console.log('AuthStateChanged: User logged out');
         const loginDiv = document.getElementById('loginDiv');
@@ -46,6 +47,7 @@ onAuthStateChanged(auth, user => {
         spaRoot.classList.replace('d-block', 'd-none');
         router.currentView = null;
         spaRoot.innerHTML = '';  // claer the view
+        document.getElementById("logininf")
         glHomeModel.reset();
     }
  

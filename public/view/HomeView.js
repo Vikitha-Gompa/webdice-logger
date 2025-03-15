@@ -8,6 +8,7 @@ export class HomeView extends AbstractView {
     constructor(controller) {
         super();
         this.controller = controller;
+        this.controller.loadExistingBalance();
     }
 
     async onMount() {
@@ -19,46 +20,40 @@ export class HomeView extends AbstractView {
     }
 
     async updateView() {
-        console.log('HomeView.updateView() called');
+
         const viewWrapper = document.createElement('div');
         const response = await fetch('/view/templates/home.html'); { cache: 'no-store' };
         viewWrapper.innerHTML = await response.text();
 
         const model = this.controller.model;
-
+        
         // game progress message
         viewWrapper.querySelector('#message').innerHTML = model.progressMessage;
+        
 
-        // turn
-        viewWrapper.querySelector('#turn').src = images[model.turn];
+        // this.controller.loadExistingBalance();
 
-        // radio buttons
-        const radioButtons = viewWrapper.querySelectorAll('input[type="radio"]');
-        for (let i = 0; i < radioButtons.length; i++) {
-            radioButtons[i].checked = radioButtons[i].value === model.playStrategy;
-        }
+        viewWrapper.querySelector('#button-new-game').onclick
+            = this.controller.onClickNewGameButton;
+        const playbutton = viewWrapper.querySelector('#button-play-game');
+        playbutton.onclick = this.controller.onClickPlayButton;
+        playbutton.disabled = true;
 
-        // game board images
-        const boardImages = viewWrapper.querySelectorAll('table img');
-        for (let i = 0; i < model.gameBoard.length; i++) {
-            boardImages[i].src = images[model.gameBoard[i]];
-        }
 
+        const diceFace = viewWrapper.querySelector("#diceValue");
+        viewWrapper.querySelector("#balance").innerHTML = "Balance $" + model.balance;
+
+        
         switch (model.gameState) {
             case GameState.INIT:
-            case GameState.DONE:
-                for (const img of boardImages) {
-                    img.noClick = true;
-                }
-                radioButtons.forEach(radio => radio.disabled = false);
-                viewWrapper.querySelector('#button-new-game').disabled = false;
+                
+                this.disabledAllPlayOptions(viewWrapper, false);
+                diceFace.innerHTML = "?";
                 break;
-            case GameState.PLAYING:
-                for (let i = 0; i < model.gameBoard.length; i++) {
-                    boardImages[i].noClick = model.gameBoard[i] !== marking.U;
-                }
-                radioButtons.forEach(radio => radio.disabled = true);
-                viewWrapper.querySelector('#button-new-game').disabled = true;
+            case GameState.DONE:
+                this.disabledAllPlayOptions(viewWrapper, true);
+                diceFace.innerHTML = model.key;
+
                 break;
 
         }
@@ -67,19 +62,31 @@ export class HomeView extends AbstractView {
     }
 
     attachEvents() {
-        document.getElementById('button-new-game').onclick 
-               = this.controller.onClickNewGameButton;
-        const boardImages = document.querySelectorAll('table img');
-        for(let i=0; i < boardImages.length; i++){
-            if(boardImages[i].noClick)continue;
-            boardImages[i].onclick = (e) => {
-                 this.controller.onClickBoardImages(i);
+        document.getElementById('button-new-game').onclick
+            = this.controller.onClickNewGameButton;
+        document.querySelector("#secretKeyCheckBox").onclick = this.controller.showKey;
+        const radioButtonsR = document.querySelectorAll('#radioRange input[type="radio"]');
+        const radioButtonsEO = document.querySelectorAll('#radioEvenOdd input[type="radio"]');
+
+        for (let i = 0; i < radioButtonsR.length; i++) {
+            radioButtonsR[i].onchange = this.controller.onChangeRadioButtons;
+            if (i < radioButtonsEO.length) {
+                radioButtonsEO[i].onchange = this.controller.onChangeRadioButtons;
             }
         }
-        const radioButtons = document.querySelectorAll('input[type="radio"]');
-        for (let i=0; i < radioButtons.length; i++){
-            radioButtons[i].onchange = this.controller.onChangeGameStrategy;
-        }
+
+
+        const betValuesonEO = document.querySelector('#EvenOddbetValue');
+        const betValuesonR = document.querySelector('#RangebetValue');
+
+
+        betValuesonEO.onchange = this.controller.updateBetValueForEvenOdd;
+            
+    
+        betValuesonR.onchange = this.controller.updateBetValueForRange;
+            
+        
+
 
     }
 
@@ -91,5 +98,34 @@ export class HomeView extends AbstractView {
         console.log('HomeView.onLeave() called');
     }
 
+    disabledAllPlayOptions(viewWrapper, enable) {
+        const radioButtonsR = viewWrapper.querySelectorAll('#radioRange input[type="radio"]');
+        const radioButtonsEO = viewWrapper.querySelectorAll('#radioEvenOdd input[type="radio"]');
+        const showKey = viewWrapper.querySelector("#secretKeyCheckBoxValue");
+        for (let i = 0; i < radioButtonsR.length; i++) {
+            radioButtonsR[i].disabled = enable;
+            if (i < radioButtonsEO.length) {
+                radioButtonsEO[i].disabled = enable;
+            }
+        }
+
+        viewWrapper.querySelector('#EvenOddbetValue').disabled = enable;
+        viewWrapper.querySelector('#RangebetValue').disabled = enable;
+        viewWrapper.querySelector('#button-new-game').disabled = !enable;
+
+        viewWrapper.querySelector("#secretKeyCheckBox").checked = this.controller.model.showKey;
+        showKey.innerHTML = "Game Key: "+this.controller.model.key;
+        if (this.controller.model.showKey) {
+            showKey.classList.remove("d-none");
+            
+        }
+        else {
+            showKey.classList.add("d-none");
+        }
+
+
+    }
+
+   
 
 }

@@ -1,43 +1,95 @@
-<h1>Tic Tac Toe Game</h1>
-<div id="message" class=" text-center fs-3 text-primary bg-warning-subtle">Message Area</div>
-<div class="text-center mt-3">
-    Turn: <img id="turn" src="/images/x.png" height="35" width="35">
+
+<br>
+
+<div class ="bg-light">
+
+    <p class="fw-bold fs-5" id="balance">Balance: $130</p>
+
+    <div class="d-flex">
+        <div id="diceValue"
+            class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center ms-0"
+            style="width: 80px; height: 80px; font-size: 1.5rem; font-weight: bold;">
+            ?
+        </div>
+    </div>
+
+    <br>
+    <div class="d-flex">
+        <p class="mb-0"> Show Key :</p>
+        <input class="form-check-input ms-2" type="checkbox" id="secretKeyCheckBox">
+        <p1 class="ms-2 d-none text-danger" id="secretKeyCheckBoxValue">0</p1>
+    </div>
+    <br>
+    <div id="message" class=" text-white fs-3 text-primary bg-primary">Message Area</div>
+    <br>
+    <div >
+        <p>Bet on Odd/Even (2x winnigs)</p>
+        <div class="d-flex align-items-center" id = "radioEvenOdd">
+
+            <!-- Radio Buttons (Odd and Even) -->
+            <div class="ms-3">
+                <input type="radio" id="odd" name="oddbetType" value="odd" checked>
+                <label for="odd">Odd</label>
+            </div>
+            <div class="ms-3">
+                <input type="radio" id="even" name="evenbetType" value="even" >
+                <label for="even">Even</label>
+            </div>
+
+            <!-- Dropdown for Bet Value -->
+            <div class="ms-3">
+                <select id="EvenOddbetValue" class="form-select">
+                    <option value="">Select a bet amount</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div >
+        <p>Bet on Range (3x winnigs)</p>
+        <div class="d-flex align-items-center" id = "radioRange">
+
+            <!-- Radio Buttons (Odd and Even) -->
+            <div class="ms-3">
+                <input type="radio" id="1-2" name="1-2betType" value="1-2" checked>
+                <label for="1-2">1-2</label>
+            </div>
+            <div class="ms-3">
+                <input type="radio" id="3-4" name="3-4betType" value="3-4">
+                <label for="3-4">3-4</label>
+            </div>
+            <div class="ms-3">
+                <input type="radio" id="5-6" name="5-6betType" value="5-6">
+                <label for="5-6">5-6</label>
+            </div>
+
+            <!-- Dropdown for Bet Value -->
+            <div class="ms-3">
+                <select id="RangebetValue" class="form-select">
+                    <option value="">Select a bet amount</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex">
+        <div>
+            <button id="button-play-game" class="btn btn-outline-primary mt-3" disabled>Play</button>
+        </div>
+
+        <div class="ms-2">
+            <button id="button-new-game" class="btn btn-outline-danger mt-3" disabled>New Game</button>
+        </div>
+    </div>
+
+
 </div>
 
-<table class="mx-auto table-bordered">
-    <tbody>
-        <tr>
-            <td><img src="/images/o.png" width="100" height="100"></td>
-            <td><img src="/images/o.png" width="100" height="100"></td>
-            <td><img src="/images/o.png" width="100" height="100"></td>
-        </tr>
-
-        <tr>
-            <td><img src="/images/u.png" width="100" height="100"></td>
-            <td><img src="/images/u.png" width="100" height="100"></td>
-            <td><img src="/images/u.png" width="100" height="100"></td>
-        </tr>
-
-        <tr>
-            <td><img src="/images/x.png" width="100" height="100"></td>
-            <td><img src="/images/x.png" width="100" height="100"></td>
-            <td><img src="/images/x.png" width="100" height="100"></td>
-        </tr>
-    </tbody>
-</table>
-
-<div class="text-center mt-3">
-    <!--Game play strategy selection-->
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="game-mode" value="vsHuman" checked >
-          Human vs. Human
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="game-mode" value="vsRandom">
-          Human vs. Random
-      </div>
-      <!--new game button-->
-      <div>
-        <button id="button-new-game" class="btn btn-outline-primary mt-3">New Game</button>
-      </div>
-</div>

@@ -12,7 +12,7 @@
 
 <body>
   <!--spinning overlay as progress indicator-->
-  <div id="spinnerOverlay" style="z-index: 1100" class=" d-none position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center">
+  <div id="spinnerOverlay" style="z-index: 11000" class=" d-none position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center">
     <div class="spinner-border text-primary" role="status" style="width: 50px; height:50px;"></div>
   </div>
 
@@ -38,19 +38,21 @@
               <a class="btn btn-outline-primary me-3" data-path="/playrecord">Play Record</a>
             </li>
             <li class="nav-item">
-              <a class="btn btn-outline-primary me-3" data-path="/profile">Sign Out</a>
+              <button id="logoutButton" class="btn btn-outline-danger me-3" >Sign Out</button>
             </li>
           </ul>
-          <button id="logoutButton" class="btn btn-danger"> Logout </button>
-        </div>
+          <a id="loginInfo" class="btn btn-secondary" aria-current="page">No User</a>
+        </div> 
       </div>
     </nav>
   </div>
 
   <!-- login form-->
   <div class="container">
+    <a id="userinfo" class="btn btn-light d-flex justify-content-end" aria-current="page">no user</a>
+    <br>
     <div id="loginDiv" class="card p-4 shadow d-block">
-      <h1>Login</h1>
+      <h1 class="ms-5 text-left">Sign in please!</h1>
       <form name="loginForm">
         <div class="mb-3">
           <label class="form-label">Email </label>

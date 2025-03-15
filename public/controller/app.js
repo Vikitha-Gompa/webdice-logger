@@ -1,6 +1,6 @@
 import { HomeView } from "../view/HomeView.js";
 import { ProfileView } from "../view/ProfileView.js";
-import { HomeController } from "./HomeController.js";
+import { HomeController1 } from "./HomeController1.js";
 import { ProfileController } from "./ProfileController.js";
 import { Router } from "./Router.js";
 import {createAccount, loginFirebase, logoutFirebase} from './firebase_auth.js';
@@ -12,8 +12,9 @@ import { PlayRecordController } from "./PlayRecordController.js";
 document.getElementById('appHeader').textContent = 'Dice Roll Game';
 document.title = 'Dice Roll Game' ;
 
+
 const routes =  [
-    {path: '/', view: HomeView, controller: HomeController},
+    {path: '/', view: HomeView, controller: HomeController1},
     {path: '/playrecord', view: PlayRecordView, controller: PlayRecordController },
     {path: '/profile', view: ProfileView, controller: ProfileController}
 ];
@@ -39,16 +40,39 @@ document.forms.loginForm.onsubmit = async function(e){
     try {
         await loginFirebase(email, password);
         stopSpinner();
+        localStorage.setItem('loggedInUser', email);
+        document.getElementById('userinfo').classList.add('d-none'); // Hide login form
         console.log('User logged in', email);
+        document.getElementById('loginInfo').innerHTML = email;
+        // document.getElementById('navMenuContainer').classList.remove('d-none'); // Show menu after login
+        
     } catch(e){
         stopSpinner();
         console.error('Error logging in:',e);
-        const errorCode = e.code;
-        const errorMessage = e.message;
+        //const errorCode = e.code;
+        //const errorMessage = e.message;
         alert('Sign in failed: '+ e.code + ',' + e.message);
 
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const savedUser = localStorage.getItem('loggedInUser');
+
+    if (savedUser) {
+        document.getElementById('userinfo').classList.add('d-none'); // Hide login button
+        document.getElementById('loginInfo').innerHTML = savedUser;  // Show logged-in email
+    } else {
+        document.getElementById('userinfo').classList.remove('d-none'); // Show login button
+        document.getElementById('loginInfo').innerHTML = 'No User';
+    }
+});
+
+// document.addEventListener('DOMContentLoaded', () => {
+//     document.getElementById('loginInfo').textContent = email;
+// });
+
+
 
 //logout button
 document.getElementById('logoutButton').onclick= async function(e){
@@ -56,6 +80,8 @@ document.getElementById('logoutButton').onclick= async function(e){
     try{
         await logoutFirebase();
         stopSpinner();
+        localStorage.removeItem('loggedInUser');
+        document.getElementById('userinfo').classList.remove('d-none'); // Hide login form
         console.log('User logged out');
     } catch(e){
         stopSpinner();
@@ -103,6 +129,8 @@ document.getElementById('goToCreateAccount').onclick = function(e){
 //hide create account form / show login form
 
 document.getElementById('goToLogin').onclick = function(e){
+
     document.getElementById('loginDiv').classList.replace('d-none', 'd-block');
+
     document.getElementById('createAccountDiv').classList.replace('d-block', 'd-none');
 }
