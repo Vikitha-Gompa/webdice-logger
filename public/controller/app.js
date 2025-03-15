@@ -7,7 +7,7 @@ import {createAccount, loginFirebase, logoutFirebase} from './firebase_auth.js';
 import { startSpinner, stopSpinner } from "../view/util.js";
 import { PlayRecordView } from "../view/PlayRecordView.js";
 import { PlayRecordController } from "./PlayRecordController.js";
-import{} from "../view/templates/home.html";
+//import{} from "../view/templates/home.html";
 
 
 document.getElementById('appHeader').textContent = 'Dice Roll Game';
